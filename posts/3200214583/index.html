@@ -24,7 +24,7 @@
 <h3 id="逻辑回归"><a href="#逻辑回归" class="headerlink" title="逻辑回归"></a>逻辑回归</h3><ol>
 <li><p>逻辑回归是一种分类方法而不是回归方法，思想是使用回归结果来分类（其实就是对结果设定阈值来分割[这个阈值是多少就是要玄学调整了]）。</p>
 </li>
-<li><p>一般来说，回归的结果的范围会是R。而经验地说（我也不知道为什么），结果范围是(0,1)会好一点，可以考虑使用一个定义域为R值域为(0,1)的函数来转换/映射过去。通常使用Sigmoid函数$S\text{igmoid}\left(x \right) = \frac{1}{1 + e^{-x}}$(题外话：机器学习有很多很多经验上使用的东西，虽然解决方法可能并不唯一，但是很多时候就像逻辑回归默认用Sigmoid函数[甚至可以直接叫Logistic函数]，不过最好还是能理解就尽量理解)，有一些理由：</p>
+<li><p>一般来说，回归的结果的范围会是R。而经验地说（我也不知道为什么），结果范围是(0,1)会好一点，可以考虑使用一个定义域为R值域为(0,1)的函数来转换/映射过去。通常使用Sigmoid函数$$S\text{igmoid}\left(x \right) = \frac{1}{1 + e^{-x}}$$(题外话：机器学习有很多很多经验上使用的东西，虽然解决方法可能并不唯一，但是很多时候就像逻辑回归默认用Sigmoid函数[甚至可以直接叫Logistic函数]，不过最好还是能理解就尽量理解)，有一些理由：</p>
 <ol>
 <li><p>这个函数可以且相对易求导（为梯度上升法做准备）</p>
 </li>
@@ -34,9 +34,9 @@
 </li>
 </ol>
 </li>
-<li><p>可以看到Sigmoid函数只接受一个参数，如果题目输入的一条数据有多个参数时可以考虑使用某种方法将其转换为单个数。这时可以考虑用这些参数线性组合为单个数。假设输入的一条数据为$X= \left\lbrack x_{1},x_{2},\cdots,x_{n}\right\rbrack$，线性组合的参数（权重）为$W = \left\lbrack w_{0},w_{1},w_{2},\cdots,w_{n} \right\rbrack$。那么Sigmoid的输入就是$w_{0}+ w_{1}x, + \omega_{2}x_{2} + \ldots +w_{n}x_{n}$（好吧也不能算线性组合，因为加了$w_{0}$）。为了方便，将X最前面插入$x_{0}= 1$（以下默认全是这样），那么前面的式子的向量/矩阵形式就是$W^{T}X$。</p>
+<li><p>可以看到Sigmoid函数只接受一个参数，如果题目输入的一条数据有多个参数时可以考虑使用某种方法将其转换为单个数。这时可以考虑用这些参数线性组合为单个数。假设输入的一条数据为$$X= \left\lbrack x_{1},x_{2},\cdots,x_{n}\right\rbrack$$，线性组合的参数（权重）为$$W = \left\lbrack w_{0},w_{1},w_{2},\cdots,w_{n} \right\rbrack$$。那么Sigmoid的输入就是$$w_{0}+ w_{1}x, + \omega_{2}x_{2} + \ldots +w_{n}x_{n}$$（好吧也不能算线性组合，因为加了$$w_{0}$$）。为了方便，将X最前面插入$$x_{0}= 1$$（以下默认全是这样），那么前面的式子的向量/矩阵形式就是$$W^{T}X$$。</p>
 </li>
-<li><p>Sigmoid函数将数据映射为(0,1)范围的数后，只要界定一个阈值$\text{Out}<em>{0}$，大于它的就分为一类（假定为第1类），反之分为另一类（假定为第0类），即可完成分类。通常将$\text{Out}</em>{0}$设置为定值0.5，不参与到反向传播中。（题外话：因为Sigmoid的输出范围是(0,1)，所以这个输出可以理解为原数据属于第1类的概率。）</p>
+<li><p>Sigmoid函数将数据映射为(0,1)范围的数后，只要界定一个阈值$$\text{Out}<em>{0}$$，大于它的就分为一类（假定为第1类），反之分为另一类（假定为第0类），即可完成分类。通常将$$\text{Out}</em>{0}$$设置为定值0.5，不参与到反向传播中。（题外话：因为Sigmoid的输出范围是(0,1)，所以这个输出可以理解为原数据属于第1类的概率。）</p>
 </li>
 </ol>
 <p>所以结构示意图如下：</p>
@@ -44,17 +44,17 @@
 <h3 id="梯度上升法"><a href="#梯度上升法" class="headerlink" title="梯度上升法"></a>梯度上升法</h3><ol>
 <li><p>梯度上升法是反向传播法的一种，即由结果和预期差距调参的方法。这里就是要调整W。</p>
 </li>
-<li><p>反向传播的依据是现有结果和期望结果的差距，我们称把给定的现有结果和期望结果转化为差距的函数为损失函数（Cost函数）。梯度上升法的目的是让Cost的输出尽量大（梯度下降法相反，要尽量小，故梯度上升和梯度下降本质差不多，容易转化，只要让$\text{Cost}_{\text{new}} = - \text{Cost}$即可）。现在要应用在逻辑回归处理二分类问题的网络上，可以先考虑对于一条数据怎么定义Cost：</p>
+<li><p>反向传播的依据是现有结果和期望结果的差距，我们称把给定的现有结果和期望结果转化为差距的函数为损失函数（Cost函数）。梯度上升法的目的是让Cost的输出尽量大（梯度下降法相反，要尽量小，故梯度上升和梯度下降本质差不多，容易转化，只要让$$\text{Cost}_{\text{new}} = - \text{Cost}$$即可）。现在要应用在逻辑回归处理二分类问题的网络上，可以先考虑对于一条数据怎么定义Cost：</p>
 <ol>
-<li><p>用$X_{3}$衡量比$X_{4}$要更好，因为从信息论来说$X_{3}$的信息显然更多。4的信息过分少了。（从$X_{2}$其实也不是不行，$X_{2}$到$X_{3}$是可逆转化），设对于这条数据期望分类是y。(那么y只可能是0或者1)</p>
+<li><p>用$$X_{3}$$衡量比$$X_{4}$$要更好，因为从信息论来说$$X_{3}$$的信息显然更多。4的信息过分少了。（从$$X_{2}$$其实也不是不行，$$X_{2}$$到$$X_{3}$$是可逆转化），设对于这条数据期望分类是y。(那么y只可能是0或者1)</p>
 </li>
-<li><p>我们希望$y = 0$时$X_{3}$尽可能接近0，$y = 1$时$X_{3}$尽可能接近1。故可以定义损失函数为：（将y的2种可能取值带进去品一品就能理解了）</p>
+<li><p>我们希望$$y = 0$$时$$X_{3}$$尽可能接近0，$$y = 1$$时$$X_{3}$$尽可能接近1。故可以定义损失函数为：（将y的2种可能取值带进去品一品就能理解了）</p>
 <ul>
-<li><p>$\text{Cost}<em>{\text{single}} = \left\lbrack \text{Sigmoid}\left(X</em>{3} \right) \right\rbrack^{y}\left\lbrack 1 - \text{Sigmoid}\left(X_{3} \right) \right\rbrack^{1 - y}$，此时效果越好时Cost越大且接近1<br>。</p>
+<li><p>$$\text{Cost}<em>{\text{single}} = \left\lbrack \text{Sigmoid}\left(X</em>{3} \right) \right\rbrack^{y}\left\lbrack 1 - \text{Sigmoid}\left(X_{3} \right) \right\rbrack^{1 - y}$$，此时效果越好时Cost越大且接近1<br>。</p>
 </li>
 <li><p>指数型函数不好（我也不知道为什么），可以求对数得到一个进一步的损失函数：</p>
 </li>
-<li><p>$\text{Cos}t_{\text{single}} = y\ln\left( \text{Sigmoid}\left( X_{3} \right) \right) + \left( 1 - y \right)\ln\left(\text{Sigmoid}\left( 1 - X_{3}\right)\right)$，此时效果越好时Cost越大且接近0。</p>
+<li><p>$$\text{Cos}t_{\text{single}} = y\ln\left( \text{Sigmoid}\left( X_{3} \right) \right) + \left( 1 - y \right)\ln\left(\text{Sigmoid}\left( 1 - X_{3}\right)\right)$$，此时效果越好时Cost越大且接近0。</p>
 </li>
 </ul>
 </li>
@@ -62,12 +62,12 @@
 </li>
 </ol>
 <ul>
-<li>得到一条数据的Cost之后，考虑将每一条数据的Cost累加起来作为总效果的Cost。即$\text{Cost} = \Sigma\text{Cost}_{\text{single}}$。</li>
+<li>得到一条数据的Cost之后，考虑将每一条数据的Cost累加起来作为总效果的Cost。即$$\text{Cost} = \Sigma\text{Cost}_{\text{single}}$$。</li>
 </ul>
 <ol>
 <li><p>Cost是一个由W决定的函数，对于一个给定的W，如果能得到Cost在该处的广义上的导数（即梯度），类比牛顿迭代法顺着梯度不断向更高处步进（每次步进多少也是可以优化的点），迭代到一定程度后就可以找到使Cost极大的W（是极大，不一定是最大，故为了使找到的极大值点是最大值点可以做一些优化，如使Cost只存在一个极大值，移动时运用退火算法等等）。</p>
 </li>
-<li><p>运用数学知识，可得 Cost关于$w_{i}$的偏导数$\frac{\partial Cost}{\partial w_{i}}$为$\sum_{j = 1}^{m}\left\lbrack \left( y_{j} - \text{Sigmoid}\left(w^{T}X^{\left( j \right)} \right) \right)x_{i}^{\left( j \right)}\right\rbrack$（j是在枚举数据，m是数据条数）（大概方法就是把慢慢把Cost一层层开出来，复合函数的求导法则）。所以$w_{i}$的梯度上升迭代公式就是$w_{i}:= w_{i} + \alpha\frac{\partial Cost}{\partial w_{i}} = w_{i} + \alpha\sum_{j= 1}^{m}\left\lbrack \left( y_{j} - \text{Sigmoid}\left( w^{T}X^{\left( j\right)} \right) \right)x_{i}^{\left( j \right)}\right\rbrack$（$\alpha$为步长）。所以W的梯度迭代公式为$W:=W +\alpha{\overrightarrow{X}}^{T}\left( Y - \text{Sigmoid}\left(W^{T}\overrightarrow{X} \right)\right)$（$\overrightarrow{X}$意为X的集合（一行是一条数据，一列下来）；Y是y的集合,一列），Sigmoid中接受了一个列向量，意为结果是对列向量的每一个元素进行Sigmoid操作，是一种表示法，即$f\left(X_{m \times 1} \right) = \left( f\left( x_{i,1} \right) \right)_{m \times1}$[事实上python的numpy确实支持这样的操作]）</p>
+<li><p>运用数学知识，可得 Cost关于$$w_{i}$$的偏导数$$\frac{\partial Cost}{\partial w_{i}}$$为$$\sum_{j = 1}^{m}\left\lbrack \left( y_{j} - \text{Sigmoid}\left(w^{T}X^{\left( j \right)} \right) \right)x_{i}^{\left( j \right)}\right\rbrack$$（j是在枚举数据，m是数据条数）（大概方法就是把慢慢把Cost一层层开出来，复合函数的求导法则）。所以$$w_{i}$$的梯度上升迭代公式就是$$w_{i}:= w_{i} + \alpha\frac{\partial Cost}{\partial w_{i}} = w_{i} + \alpha\sum_{j= 1}^{m}\left\lbrack \left( y_{j} - \text{Sigmoid}\left( w^{T}X^{\left( j\right)} \right) \right)x_{i}^{\left( j \right)}\right\rbrack$$（$$\alpha$$为步长）。所以W的梯度迭代公式为$$W:=W +\alpha{\overrightarrow{X}}^{T}\left( Y - \text{Sigmoid}\left(W^{T}\overrightarrow{X} \right)\right)$$（$$\overrightarrow{X}$$意为X的集合（一行是一条数据，一列下来）；Y是y的集合,一列），Sigmoid中接受了一个列向量，意为结果是对列向量的每一个元素进行Sigmoid操作，是一种表示法，即$$f\left(X_{m \times 1} \right) = \left( f\left( x_{i,1} \right) \right)_{m \times1}$$[事实上python的numpy确实支持这样的操作]）</p>
 </li>
 </ol>
 <h2 id="Python3实战"><a href="#Python3实战" class="headerlink" title="Python3实战"></a>Python3实战</h2><h4 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h4><p>100条数据，每条数据有X1，X2两个参数，被分为两类，0类和1类。<br>储存在testSet.txt中，一行一条数据，数据内参数由空格隔开。<br>第一列为X1，第二列为X2，第三列为类别</p>
