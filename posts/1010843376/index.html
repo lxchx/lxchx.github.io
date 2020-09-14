@@ -29,16 +29,28 @@
 </ul>
 <h1 id="无符号整数的编码">无符号整数的编码</h1>
 <p>直接将 <span class="math inline">\(\vec{x}\)</span> 视作二进制数，就是 <span class="math inline">\(\vec{x}\)</span> 的无符号表示。</p>
-<pre><code>优点：
-    简明直观
-缺点：
-    没有负数</code></pre>
+<blockquote>
+<p>优点：</p>
+<ul>
+<li>简明直观</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>没有负数</li>
+</ul>
+</blockquote>
 <h1 id="有负数的编码">有负数的编码</h1>
 <h2 id="移码">移码</h2>
 <p>为了兼容负数的朴素编码，若数据为w位，考虑意码是由内码减去<span class="math inline">\(2^{w-1}\)</span>得到，则可以得到意码范围在<span class="math inline">\(-2^{w-1} \sim 2^{w-1}\)</span>的编码。</p>
 <blockquote>
-<p>优点： * 直观，可以直接兼容移码和无符号编码的加减计算。没有两个0。</p>
-<p>缺点： * 移码与移码的加减运算要稍复杂。<span class="math inline">\(B2U_w(\vec{x}_{移_{ed}})+B2U_w(\vec{y}_{移_{ed}})=B2U_w(\vec{x}_{移_{ed}}+\vec{y}_{移_{ed}}-U2B_w(2^{w-1}))\)</span> ; <span class="math inline">\(B2U_w(\vec{x}_{移_{ed}})-B2U_w(\vec{y}_{移_{ed}})=B2U_w(\vec{x}_{移_{ed}}-\vec{y}_{移_{ed}}+U2B_w(2^{w-1}))\)</span></p>
+<p>优点：</p>
+<ul>
+<li>直观，可以直接兼容移码和无符号编码的加减计算。没有两个0。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>移码与移码的加减运算要稍复杂。<span class="math inline">\(B2U_w(\vec{x}_{移_{ed}})+B2U_w(\vec{y}_{移_{ed}})=B2U_w(\vec{x}_{移_{ed}}+\vec{y}_{移_{ed}}-U2B_w(2^{w-1}))\)</span> ; <span class="math inline">\(B2U_w(\vec{x}_{移_{ed}})-B2U_w(\vec{y}_{移_{ed}})=B2U_w(\vec{x}_{移_{ed}}-\vec{y}_{移_{ed}}+U2B_w(2^{w-1}))\)</span></li>
+</ul>
 </blockquote>
 <h2 id="原码ones-complement">原码（Ones' Complement）</h2>
 <h2 id="反码sign-magnitude">反码（Sign-Magnitude）</h2>
